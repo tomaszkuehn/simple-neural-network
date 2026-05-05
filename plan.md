@@ -1,37 +1,42 @@
- I want to build neural network to recognize 2 different shapes (horizontal line, vertical line) from 3x3 input matrix. For this I need 9 input neurons and two output neurons, about 12 internal neurons. Using tensorFlow, input matrix is binary, shapes are 2-3 pixels.
+ I want to build neural network to recognize 2 different shapes (horizontal line, vertical line) from 3x3 input matrix. For this I need 9 input neurons and two output neurons, about 12 internal neurons. Input matrix is binary, shapes are 3 pixels (full lines across the grid).
 
 Plan: Build Neural Network for Shape Recognition
-Implement a feedforward neural network in TensorFlow/Keras to classify 3x3 binary matrices into two categories: horizontal lines and vertical lines. The network will have 9 input neurons, one hidden layer with 12 neurons, and 2 output neurons.
+Implement a feedforward neural network from scratch using NumPy to classify 3x3 binary matrices into two categories: horizontal lines and vertical lines. The network will have 9 input neurons, one hidden layer with 12 neurons (ReLU activation), and 2 output neurons (sigmoid activation for binary classification).
 
 Steps
 
-1. Set up the Python environment and dependencies: Create a virtual environment, install TensorFlow, NumPy, and Matplotlib.
-2. Generate training and test datasets: Create binary 3x3 matrices representing horizontal and vertical lines. For horizontal lines, set 2-3 pixels in a single row to 1. For vertical lines, set 2-3 pixels in a single column to 1. Generate 1000 samples per class, with labels (0 for horizontal, 1 for vertical).
-3. Build the neural network model: Use Keras Sequential API with Dense layers: Input (9) -> Dense(12, ReLU) -> Dense(2, Softmax).
-4. Compile the model: Use Adam optimizer, categorical cross-entropy loss, accuracy metric.
-5. Train the model: Fit on training data for 50 epochs, with validation split.
-6. Evaluate the model: Test on unseen data, print accuracy and confusion matrix.
-7. Visualize results: Plot training history and some predictions.
+1. Set up the Python environment: Install NumPy (no TensorFlow needed - implementation is from scratch).
+2. Generate training and test datasets: Create binary 3x3 matrices representing horizontal and vertical lines. For horizontal lines, set all 3 pixels in a single row to 1. For vertical lines, set all 3 pixels in a single column to 1. Generate 100 samples per class for training, 20 for testing. Data is shuffled before training.
+3. Build the neural network: Implement a custom NeuralNetwork class with:
+   - Weights initialized with small random values (randn * 0.01)
+   - Hidden layer: Dense(9 -> 12) with ReLU activation
+   - Output layer: Dense(12 -> 2) with sigmoid activation
+   - Backpropagation with gradient descent
+4. Train the model: Use binary cross-entropy loss, learning rate 0.5, train for 1000 epochs.
+5. Evaluate the model: Test on unseen data, print accuracy for both training and test sets.
+6. Test with specific examples: Verify predictions on sample horizontal and vertical lines.
 
 Relevant files
 
-requirements.txt — List dependencies: tensorflow, numpy, matplotlib
-data_generator.py — Script to generate the 3x3 matrices and labels
-model.py — Define and train the neural network
-evaluate.py — Test the model and visualize results
+neural_network.py — Single file containing the NeuralNetwork class, data generation, training, and evaluation code
+README.md — Project description
 
 Verification
 
-1. Run python data_generator.py to ensure data generation works and outputs correct shapes.
-2. Run python model.py to train the model; check that loss decreases and accuracy increases.
-3. Run python evaluate.py to test; verify test accuracy >90% and correct classifications.
+1. Run python neural_network.py to generate data, train the model, and see results.
+2. Check that loss decreases during training (printed every 100 epochs).
+3. Verify test accuracy >90% and correct classifications on test examples.
 
 Decisions
 
-Framework: TensorFlow/Keras as specified.
-Data: Binary 3x3 matrices; horizontal lines have 1s concentrated in rows (2-3 pixels per row), vertical in columns.
-Model: Simple feedforward NN with one hidden layer of 12 neurons.
-Scope: Includes data generation, training, evaluation; excludes advanced features like CNNs or data augmentation beyond basic generation.
+Framework: Pure NumPy implementation (no TensorFlow/Keras) - built from scratch.
+Data: Binary 3x3 matrices; horizontal lines have all 3 pixels in a row set to 1, vertical lines have all 3 pixels in a column set to 1. Data is shuffled before training.
+Model: Simple feedforward NN with one hidden layer of 12 neurons (ReLU), output layer with 2 neurons (sigmoid).
+Loss: Binary cross-entropy.
+Optimizer: Gradient descent (no Adam - simple implementation).
+Scope: Single file implementation including data generation, training, evaluation, and testing.
 Further Considerations
 
-If the model doesn't converge well, consider adjusting the number of hidden neurons or adding more layers.
+- The implementation works well for this simple task but may need adjustments for more complex patterns.
+- Consider lowering learning rate if training becomes unstable.
+- Data is perfectly separable (no noise), so high accuracy is expected.
