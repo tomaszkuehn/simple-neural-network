@@ -261,9 +261,19 @@ if __name__ == "__main__":
     print("Testing with specific shapes")
     print("=" * 60)
     
-    # Horizontal line (middle row filled)
+    # Horizontal line (upper row filled)
     horizontal_line = np.zeros(9)
     horizontal_line[0:2] = 1
+    pred_h = nn.predict(horizontal_line.reshape(1, -1))
+    print(f"\nHorizontal line test:")
+    print(f"  Input: {horizontal_line.reshape(3, 3)}")
+    print(f"  Prediction (Horizontal, Vertical): {pred_h[0]}")
+    print(f"  Predicted class: {'Horizontal' if pred_h[0, 0] > pred_h[0, 1] else 'Vertical'}")
+
+    # Horizontal line (upper row filled with gap)
+    horizontal_line = np.zeros(9)
+    horizontal_line[0:1] = 1
+    horizontal_line[2:3] = 1
     pred_h = nn.predict(horizontal_line.reshape(1, -1))
     print(f"\nHorizontal line test:")
     print(f"  Input: {horizontal_line.reshape(3, 3)}")
