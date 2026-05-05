@@ -36,11 +36,6 @@ class NeuralNetwork:
         return 1 / (1 + np.exp(-np.clip(x, -500, 500)))
     
     @staticmethod
-    def sigmoid_derivative(x: np.ndarray) -> np.ndarray:
-        """Derivative of sigmoid function."""
-        return x * (1 - x)
-    
-    @staticmethod
     def relu(x: np.ndarray) -> np.ndarray:
         """ReLU activation function."""
         return np.maximum(0, x)
@@ -215,6 +210,11 @@ def generate_training_data(num_samples: int = 100, verbose: bool = False) -> Tup
 
     # One-hot encoding for binary classification
     y_onehot = np.hstack([1 - y, y])
+    
+    # Shuffle the data to avoid ordered training (all horizontal first, then vertical)
+    indices = np.random.permutation(len(X))
+    X = X[indices]
+    y_onehot = y_onehot[indices]
 
     return X, y_onehot
 
